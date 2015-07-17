@@ -68,7 +68,14 @@
         #Create a personal queue or bind to an existing queue
         if($QueueName)
         {
-            $QueueResult = $Channel.QueueDeclare($QueueName, $Durable, $Exclusive, $AutoDelete, $null)
+            try {
+                #try to bind to an existing queue
+                $QueueResult = $Channel.QueueDeclarePassive($QueueName)
+            } catch {
+                #if that fails, get a new channel and create the queue
+                $Channel = $Connection.CreateModel()
+                $QueueResult = $Channel.QueueDeclare($QueueName, $Durable, $Exclusive, $AutoDelete, $null)
+            }
             if(-not $Key)
             {
                 $Key = $QueueName
