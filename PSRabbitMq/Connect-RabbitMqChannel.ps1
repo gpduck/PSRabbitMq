@@ -37,7 +37,8 @@
 
     [cmdletbinding(DefaultParameterSetName = 'NoQueueName')]
     param(
-
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
         $Connection,
 
         [parameter(Mandatory = $True)]
